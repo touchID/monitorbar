@@ -21,9 +21,10 @@
 		60B83B9C25ADC2D00014DC4C /* Monitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B83B9B25ADC2D00014DC4C /* Monitor.swift */; };
 		60B83BA025ADECAD0014DC4C /* MeterIp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B83B9F25ADECAD0014DC4C /* MeterIp.swift */; };
 		60DE6C3125923CFC00C24974 /* mbApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DE6C3025923CFC00C24974 /* mbApp.swift */; };
-		60DE6C3325923CFC00C24974 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DE6C3225923CFC00C24974 /* ContentView.swift */; };
 		60DE6C3525923CFE00C24974 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60DE6C3425923CFE00C24974 /* Assets.xcassets */; };
 		60DE6C3825923CFE00C24974 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60DE6C3725923CFE00C24974 /* Preview Assets.xcassets */; };
+		89F4A54E2E3F487C007A4FB1 /* NetworkServiceUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F4A54D2E3F487C007A4FB1 /* NetworkServiceUtil.swift */; };
+		89F4A5512E3F67A0007A4FB1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89F4A5502E3F67A0007A4FB1 /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,11 +43,12 @@
 		60B83B9F25ADECAD0014DC4C /* MeterIp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeterIp.swift; sourceTree = "<group>"; };
 		60DE6C2D25923CFC00C24974 /* mb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mb.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60DE6C3025923CFC00C24974 /* mbApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mbApp.swift; sourceTree = "<group>"; };
-		60DE6C3225923CFC00C24974 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		60DE6C3425923CFE00C24974 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		60DE6C3725923CFE00C24974 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		60DE6C3925923CFE00C24974 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60DE6C3A25923CFE00C24974 /* mb.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = mb.entitlements; sourceTree = "<group>"; };
+		89F4A54D2E3F487C007A4FB1 /* NetworkServiceUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceUtil.swift; sourceTree = "<group>"; };
+		89F4A5502E3F67A0007A4FB1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89F4A5512E3F67A0007A4FB1 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				60DE6C2F25923CFC00C24974 /* mb */,
+				89F4A54F2E3F679F007A4FB1 /* Frameworks */,
 				60DE6C2E25923CFC00C24974 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -95,8 +99,8 @@
 			children = (
 				60AE1C9725AB4F8B000E94E7 /* Meters */,
 				60DE6C3025923CFC00C24974 /* mbApp.swift */,
-				60DE6C3225923CFC00C24974 /* ContentView.swift */,
 				609F9F94259BF8270055D218 /* MenuBar.swift */,
+				89F4A54D2E3F487C007A4FB1 /* NetworkServiceUtil.swift */,
 				60AE1C8D25AB3CB3000E94E7 /* MenuBarSettings.swift */,
 				60B83B9B25ADC2D00014DC4C /* Monitor.swift */,
 				605B738725A1110B00186860 /* Utils.swift */,
@@ -116,6 +120,14 @@
 				60DE6C3725923CFE00C24974 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		89F4A54F2E3F679F007A4FB1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				89F4A5502E3F67A0007A4FB1 /* SystemConfiguration.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,9 +205,9 @@
 				60AE1C9125AB4CDF000E94E7 /* Meter.swift in Sources */,
 				60B83B9C25ADC2D00014DC4C /* Monitor.swift in Sources */,
 				605B7375259CE49100186860 /* MeterCpu.swift in Sources */,
-				60DE6C3325923CFC00C24974 /* ContentView.swift in Sources */,
 				60AE1CA325AB54CF000E94E7 /* UtilsDraw.swift in Sources */,
 				605B738025A0C9C900186860 /* MeterBattery.swift in Sources */,
+				89F4A54E2E3F487C007A4FB1 /* NetworkServiceUtil.swift in Sources */,
 				60844D9425A3BB210080C23A /* RepeatingTimer.swift in Sources */,
 				605B737C259F733A00186860 /* MeterMemory.swift in Sources */,
 				601F82D025A8ABBA001F8EC3 /* MeterDisk.swift in Sources */,

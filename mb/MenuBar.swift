@@ -57,15 +57,22 @@ class MenuBar {
         //menuSettings.submenu?.items = [NSMenuItem(title: "Compact"
         //                               ,action: #selector(AppDelegate.appMonitorClicked(_:)), keyEquivalent: "s")]
         //menu.addItem(menuSettings)
-        menu.addItem(NSMenuItem(title: "Compact"
-                    ,action: #selector(AppDelegate.compact(_:)), keyEquivalent: "c"))
-        menu.addItem(NSMenuItem(title: "Normal"
-                    ,action: #selector(AppDelegate.normal(_:)), keyEquivalent: "n"))
-        menu.addItem(NSMenuItem(title: "Extra"
-                    ,action: #selector(AppDelegate.extra(_:)), keyEquivalent: "e"))
+        menu.addItem(NSMenuItem(title: "图标"//Compact
+                    ,action: #selector(AppDelegate.compact(_:)), keyEquivalent: "t"))
+        menu.addItem(NSMenuItem(title: "数字"//Normal
+                    ,action: #selector(AppDelegate.normal(_:)), keyEquivalent: "s"))
+        menu.addItem(NSMenuItem(title: "详细"//Extra
+                    ,action: #selector(AppDelegate.extra(_:)), keyEquivalent: "x"))
         
-        menu.addItem(NSMenuItem(title: "Activity Monitor"
+        menu.addItem(NSMenuItem(title: "Activity Monitor任务管理器"
                     ,action: #selector(AppDelegate.appMonitorClicked(_:)), keyEquivalent: "a"))
+        
+        menu.addItem(NSMenuItem(title: "当前网卡顺序"
+                    ,action: #selector(AppDelegate.handleCurrentOrderAction(_:)), keyEquivalent: "k"))
+        menu.addItem(NSMenuItem(title: "以太网"
+                                ,action: #selector(AppDelegate.handleEthernetAction(_:)), keyEquivalent: "l"))
+        menu.addItem(NSMenuItem(title: "WiFi"
+                                ,action: #selector(AppDelegate.handleWiFiAction(_:)), keyEquivalent: "w"))
         menu.addItem(NSMenuItem(title: "Quit"
                     ,action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
         statusItem?.menu = menu
@@ -109,6 +116,10 @@ class MenuBar {
         battery.draw(pos, MenuBarSettings.themes[MenuBarSettings.theme][5])
         
         image.unlockFocus()
-        statusItem?.button?.image = image
+        // 回到主线程更新UI
+        DispatchQueue.main.async {
+            // 这里可以添加UI更新代码（如果有的话）
+            self.statusItem?.button?.image = image
+        }
     }
 }
