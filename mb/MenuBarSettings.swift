@@ -45,7 +45,7 @@ class MenuBarSettings {
     
     func initialise() {
         MenuBarSettings.mode = UserDefaults.standard.integer(forKey: "Mode")
-        if MenuBarSettings.mode < 1 {
+        if MenuBarSettings.mode < 0 {
            MenuBarSettings.mode = 2 // default to normal
         }
         MenuBarSettings.dateFormatter.dateFormat = "E d MMM HH:mm"

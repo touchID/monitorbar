@@ -57,6 +57,8 @@ class MenuBar {
         //menuSettings.submenu?.items = [NSMenuItem(title: "Compact"
         //                               ,action: #selector(AppDelegate.appMonitorClicked(_:)), keyEquivalent: "s")]
         //menu.addItem(menuSettings)
+        menu.addItem(NSMenuItem(title: "无"//Compact
+                    ,action: #selector(AppDelegate.zero(_:)), keyEquivalent: "0"))
         menu.addItem(NSMenuItem(title: "图标"//Compact
                     ,action: #selector(AppDelegate.compact(_:)), keyEquivalent: "t"))
         menu.addItem(NSMenuItem(title: "数字"//Normal
@@ -119,7 +121,14 @@ class MenuBar {
         // 回到主线程更新UI
         DispatchQueue.main.async {
             // 这里可以添加UI更新代码（如果有的话）
-            self.statusItem?.button?.image = image
+            // 找到处理模式的代码部分，添加对模式0的处理
+            if MenuBarSettings.mode == 0 {
+                // 无图标模式的具体实现
+                self.statusItem?.button?.image = nil
+                self.statusItem?.button?.title = ""
+            } else {
+                self.statusItem?.button?.image = image
+            }
         }
     }
 }

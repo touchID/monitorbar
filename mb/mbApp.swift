@@ -136,6 +136,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return output
     }
 
+    
+    @objc func zero(_ sender: NSMenuItem?) {
+        AppDelegate.setMode(0)
+    }
+    
     @objc func compact(_ sender: Any) {
         AppDelegate.setMode(1)
     }
