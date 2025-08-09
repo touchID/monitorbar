@@ -73,7 +73,7 @@ class MenuBar {
                     ,action: #selector(AppDelegate.handleCurrentOrderAction(_:)), keyEquivalent: "k"))
         menu.addItem(NSMenuItem(title: "以太网"
                                 ,action: #selector(AppDelegate.handleEthernetAction(_:)), keyEquivalent: "l"))
-        menu.addItem(NSMenuItem(title: "WiFi"
+        menu.addItem(NSMenuItem(title: "无线网"
                                 ,action: #selector(AppDelegate.handleWiFiAction(_:)), keyEquivalent: "w"))
         menu.addItem(NSMenuItem(title: "Quit"
                     ,action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
@@ -125,7 +125,17 @@ class MenuBar {
             if MenuBarSettings.mode == 0 {
                 // 无图标模式的具体实现
                 self.statusItem?.button?.image = nil
-                self.statusItem?.button?.title = ""
+                NetworkServiceUtil.shared.executeNetworkCommand(arguments: ["-listnetworkserviceorder"]) { [weak self] output in
+                    if let self = self, let output = output {
+                        let services = NetworkServiceUtil.shared.parseNetworkServices(from: output)
+                        DispatchQueue.main.async {
+                            self.statusItem?.button?.title = services.first ?? ""
+                        }
+                    }
+                }
+
+
+//                self.statusItem?.button?.title = ""
             } else {
                 self.statusItem?.button?.image = image
             }

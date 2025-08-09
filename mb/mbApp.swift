@@ -56,7 +56,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             name: NSWorkspace.willSleepNotification,
             object: nil
         )
-        handleWiFiAction(nil)
     }
     
     // 构建菜单栏右键菜单
@@ -88,22 +87,43 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func handleCurrentOrderAction(_ sender: NSMenuItem?) {
-        executeNetworkCommand(arguments: ["-listnetworkserviceorder"]) { output in
-            if let output = output { print(output) }
+        executeNetworkCommand(arguments: ["-listnetworkserviceorder"]) { [weak self] output in
+            if let self = self, let output = output {
+                print(output)
+                let services = NetworkServiceUtil.shared.parseNetworkServices(from: output)
+                self.showNotification(title: "当前网络设置", subtitle: services.joined(separator: "\n"))
+            }
         }
     }
 
     @objc func handleEthernetAction(_ sender: NSMenuItem?) {
-        executeNetworkCommand(arguments: ["-switchtolocation", "Automatic"]) { output in
-            guard let output = output else { return }
+        NetworkServiceUtil.shared.setEthernetAsPrimary()
+        // 显示系统通知
+        showNotification(title: "网络设置已更新", subtitle: "以太网已设置为首要网络")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.handleCurrentOrderAction(sender)
         }
     }
 
     @objc func handleWiFiAction(_ sender: NSMenuItem?) {  // 将参数改为可选类型
         // 使用工具类设置WiFi为首要网络服务
         NetworkServiceUtil.shared.setWifiAsPrimary()
+        // 显示系统通知
+        showNotification(title: "网络设置已更新", subtitle: "WiFi已设置为首要网络")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.handleCurrentOrderAction(sender)
+        }
     }
     
+    // 显示系统通知的方法
+    private func showNotification(title: String, subtitle: String) {
+        let notification = NSUserNotification()
+        notification.title = title
+        notification.subtitle = subtitle
+        notification.soundName = NSUserNotificationDefaultSoundName
+        NSUserNotificationCenter.default.deliver(notification)
+    }
+
     private func executeNetworkCommand(arguments: [String], completion: ((String?) -> Void)? = nil) {
 //        DispatchQueue.global(qos: .utility).async {
             let task = Process()

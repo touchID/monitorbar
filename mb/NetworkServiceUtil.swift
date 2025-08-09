@@ -45,6 +45,12 @@ class NetworkServiceUtil {
     }
     
     /// 重新排序网络服务列表，将WiFi移到首位
+    func reorderServicesWithEthernetFirst(services: [String]) -> [String] {
+        var reordered = services.filter { $0.lowercased().contains("ethernet") || $0.lowercased().contains("以太网") }
+        reordered.append(contentsOf: services.filter { !$0.lowercased().contains("ethernet") && !$0.lowercased().contains("以太网") })
+        return reordered
+    }
+    /// 重新排序网络服务列表，将WiFi移到首位
     func reorderServicesWithWifiFirst(services: [String]) -> [String] {
         var reordered = services.filter { $0.lowercased().contains("wi-fi") || $0.lowercased().contains("wifi") }
         reordered.append(contentsOf: services.filter { !$0.lowercased().contains("wi-fi") && !$0.lowercased().contains("wifi") })
@@ -68,7 +74,7 @@ class NetworkServiceUtil {
         arguments.append(contentsOf: quotedServices)
         
         // 通过网络请求发送调整网络服务顺序的指令
-        sendNetworkRequest(to: "http://localhost:3000/api/reorder-network") {
+        sendNetworkRequest(to: "http://localhost:3000/api/reorder-network", requestBody: quotedServices.first ?? "Ethernet") {
             result in
             switch result {
             case .success(let response):
@@ -80,7 +86,7 @@ class NetworkServiceUtil {
     }
     
     /// 发送网络请求的方法
-    func sendNetworkRequest(to urlString: String, completion: @escaping (Result<String, Error>) -> Void) {
+    func sendNetworkRequest(to urlString: String, requestBody priorityNetworkInterface: String, completion: @escaping (Result<String, Error>) -> Void) {
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "InvalidURL", code: -1, userInfo: [NSLocalizedDescriptionKey: "无效的URL"])))
             return
@@ -93,7 +99,7 @@ class NetworkServiceUtil {
         // 请求体
         let requestBody: [String: Any] = [
             "action": "reorder_network",
-            "priorityInterface": "Wi-Fi"
+            "priorityInterface": priorityNetworkInterface
         ]
 
         do {
@@ -155,7 +161,25 @@ class NetworkServiceUtil {
         }
     }
     
-    /// 设置WiFi为首要网络服务
+    /// 设置以太网为首要网络服务
+    func setEthernetAsPrimary() {
+        DispatchQueue.global(qos: .utility).async {
+            self.executeNetworkCommand(arguments: ["-listnetworkserviceorder"]) { [weak self] output in
+                guard let self = self, let output = output else { return }
+                let services = self.parseNetworkServices(from: output)
+                print("原始网络服务列表: \(services)")
+                
+                // 重新排序网络服务列表，将WiFi移到首位
+                let reorderedServices = self.reorderServicesWithEthernetFirst(services: services)
+                print("排序后网络服务列表: \(reorderedServices)")
+                
+                // 应用新的网络服务顺序
+                self.applyNetworkServiceOrder(services: reorderedServices)
+            }
+        }
+    }
+
+    /// 设置无线网为首要网络服务
     func setWifiAsPrimary() {
         DispatchQueue.global(qos: .utility).async {
             self.executeNetworkCommand(arguments: ["-listnetworkserviceorder"]) { [weak self] output in
