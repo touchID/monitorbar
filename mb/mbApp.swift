@@ -109,7 +109,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // 使用工具类设置WiFi为首要网络服务
         NetworkServiceUtil.shared.setWifiAsPrimary()
         // 显示系统通知
-        showNotification(title: "网络设置已更新", subtitle: "WiFi已设置为首要网络")
+        showNotification(title: "网络设置已更新", subtitle: "无线网已设置为首要网络")
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.handleCurrentOrderAction(sender)
         }
