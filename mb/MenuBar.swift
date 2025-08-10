@@ -69,12 +69,6 @@ class MenuBar {
         menu.addItem(NSMenuItem(title: "Activity Monitor任务管理器"
                     ,action: #selector(AppDelegate.appMonitorClicked(_:)), keyEquivalent: "a"))
         
-        menu.addItem(NSMenuItem(title: "当前网卡顺序"
-                    ,action: #selector(AppDelegate.handleCurrentOrderAction(_:)), keyEquivalent: "k"))
-        menu.addItem(NSMenuItem(title: "以太网"
-                                ,action: #selector(AppDelegate.handleEthernetAction(_:)), keyEquivalent: "l"))
-        menu.addItem(NSMenuItem(title: "无线网"
-                                ,action: #selector(AppDelegate.handleWiFiAction(_:)), keyEquivalent: "w"))
         menu.addItem(NSMenuItem(title: "Quit"
                     ,action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
         statusItem?.menu = menu
@@ -125,19 +119,17 @@ class MenuBar {
             if MenuBarSettings.mode == 0 {
                 // 无图标模式的具体实现
                 self.statusItem?.button?.image = nil
-                NetworkServiceUtil.shared.executeNetworkCommand(arguments: ["-listnetworkserviceorder"]) { [weak self] output in
-                    if let self = self, let output = output {
-                        let services = NetworkServiceUtil.shared.parseNetworkServices(from: output)
-                        DispatchQueue.main.async {
-                            self.statusItem?.button?.title = services.first ?? ""
-                        }
-                    }
-                }
-
-
 //                self.statusItem?.button?.title = ""
             } else {
                 self.statusItem?.button?.image = image
+            }
+            NetworkServiceUtil.shared.executeNetworkCommand(arguments: ["-listnetworkserviceorder"]) { [weak self] output in
+                if let self = self, let output = output {
+                    let services = NetworkServiceUtil.shared.parseNetworkServices(from: output)
+                    DispatchQueue.main.async {
+                        self.statusItem?.button?.title = services.first ?? ""
+                    }
+                }
             }
         }
     }
