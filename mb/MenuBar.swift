@@ -69,12 +69,6 @@ class MenuBar {
         menu.addItem(NSMenuItem(title: "Activity Monitor任务管理器"
                     ,action: #selector(AppDelegate.appMonitorClicked(_:)), keyEquivalent: "a"))
         
-        menu.addItem(NSMenuItem(title: "当前网卡顺序"
-                    ,action: #selector(AppDelegate.handleCurrentOrderAction(_:)), keyEquivalent: "k"))
-        menu.addItem(NSMenuItem(title: "以太网"
-                                ,action: #selector(AppDelegate.handleEthernetAction(_:)), keyEquivalent: "l"))
-        menu.addItem(NSMenuItem(title: "无线网"
-                                ,action: #selector(AppDelegate.handleWiFiAction(_:)), keyEquivalent: "w"))
         menu.addItem(NSMenuItem(title: "Quit"
                     ,action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
         statusItem?.menu = menu
